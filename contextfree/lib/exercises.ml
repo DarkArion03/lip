@@ -34,6 +34,7 @@ let palindromes : grammar =  {
   terminals = [ '0'; '1' ];
   productions =
     [
+      S --> "";
       S --> "0";
       S --> "1";
       S --> "0S0";
@@ -50,17 +51,22 @@ let balanced_parentheses : grammar =
     terminals = [ '('; ')'; '['; ']'; '{'; '}' ];
     productions =
       [
-        S --> "()";
-        S --> "[]";
-        S --> "{}";
-        S --> "(S)";
-        S --> "[S]";
-        S --> "{S}";
-        S --> "SS";
+        (*0*) S --> "()"; 
+        (*1*) S --> "[]";
+        (*2*) S --> "{}";
+        (*3*) S --> "S()"; 
+        (*4*) S --> "S[]";
+        (*5*) S --> "S{}";
+        (*6*) S --> "(S)";
+        (*7*) S --> "[S]";
+        (*8*) S --> "{S}";
+        (*9*) S --> "()S";
+        (*10*) S --> "[]S";
+        (*11*) S --> "{}S";
       ];
     start = S;
   }
-
+  
 
 (* #### Exercise 4, hard (same_amount)
 
@@ -75,9 +81,12 @@ let same_amount : grammar =
     productions =
       [
         S --> "";
+        S --> "S01";
+        S --> "S10";
         S --> "0S1";
         S --> "1S0";
-        S --> "SS";
+        S --> "01S";
+        S --> "10S";
       ];
     start = S;
   }
