@@ -1,2 +1,11 @@
+<<<<<<< HEAD
 (test
  (name test_toylexer))
+=======
+(library
+ (name toylexertest)
+ (inline_tests)
+ (preprocess
+  (pps ppx_inline_test))
+ (libraries toylexer))
+>>>>>>> c560c1745f550a01ceba8575c8c1c1182c6a3dfe
