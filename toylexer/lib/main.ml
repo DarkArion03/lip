@@ -30,15 +30,15 @@ let frequency n l =
   in
   let rec update_freq x f = match f with 
   | [] -> [(x, 1)]
-  | (y, m)::f' -> if x = y then (y, m+1)::f' else (y, m)::update_freq x f'
+  | (y, m)::f' -> if x = y then (y, m+1)::f' else (y, m)::(update_freq x f')
   in 
-  let rec freq_list l = match l with
-  | [] -> []
-  | x::l' -> update_freq x (freq_list l');  
+  let rec freq_list l f = match l with
+  | [] -> f
+  | x::l' -> let f' = update_freq x f in freq_list l' f';  
   in 
   let rec cut n l = match n, l with
   |0, _ -> []
   |_, [] -> []
   |_, x::l' -> x::(cut (n-1) l');
   in 
-  cut n (sort_list (freq_list l));;
+  cut n (sort_list (freq_list l []));;
