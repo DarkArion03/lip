@@ -15,3 +15,5 @@ rule read =
   | "then" { THEN }
   | "else" { ELSE }
   | eof { EOF }
+  | "&&" { AND }
+  | "||" { OR }
