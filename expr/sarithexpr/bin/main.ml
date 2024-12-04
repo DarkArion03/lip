@@ -1,4 +1,4 @@
-open Sarithexpr.Main
+open SarithexprLib.Main
   
 (* read file, and output it to a string *)
 
