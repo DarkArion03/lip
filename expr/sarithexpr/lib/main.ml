@@ -91,12 +91,15 @@ let rec eval = function
     | Nat n1 -> if n1 > 0 then Bool false else Bool true
     | _ -> failwith "IsZero argument must be a natural value")
 
-let rec typecheck = function
+let typecheck = function
     True -> BoolT
   | False -> BoolT
   | If(e1, e2, e3) -> 
-      (match eval e1 with
-      | Bool b1 -> if b1 then typecheck e2 else typecheck e3
+      (match eval e1, eval e2, eval e3 with
+      | Bool _, Bool _, Bool _ -> BoolT
+      | Bool _, Nat _, Nat _ -> NatT
+      | Bool _, Bool _, Nat _ -> raise (TypeError (string_of_expr e3 ^ " has type Nat, but type Bool was expected"))
+      | Bool _, Nat _, Bool _ -> raise (TypeError (string_of_expr e3 ^ " has type Bool, but type Nat was expected"))
       | _ -> raise (TypeError (string_of_expr e1 ^ " has type Nat, but type Bool was expected")))
   | Not(e1) -> 
       (match eval e1 with
