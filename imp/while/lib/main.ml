@@ -1,12 +1,24 @@
 open Ast
 open Types
 
+let state s = match s with
+  _ -> raise (UnboundVar("Unbound variable: " ^ s))
+
 let parse (s : string) : conf =
   let lexbuf = Lexing.from_string s in
   let ast = Parser.prog Lexer.read lexbuf in
   ast
 
-let trace1 = function
+let rec trace1 = function
+  | Not(True) -> False
+  | Not(False) -> True
+  | Not(e1) -> Not(trace1 e1)
+  | And(True, e2) -> e2
+  | And(False, _) -> False
+  | And(e1, e2) -> And(trace1 e1, e2)
+  | Or(True, _) -> True
+  | Or(False, e2) -> e2
+  | Or(e1, e2) -> Or(trace1 e1, e2) 
   | _ -> raise NoRuleApplies
 
 let rec trace n c = match n with
@@ -21,8 +33,12 @@ let rec trace n c = match n with
 let rec eval_expr = function
   True -> Bool true
 | False -> Bool false
-| Var(_) -> Bool true
-| Const(_) -> Bool true
+| Var(s) -> 
+  (try 
+      state s
+    with 
+       UnboundVar _ -> failwith "Used variables must be initialized")
+| Const(i) -> Nat i
 | Not(e) -> 
   (match eval_expr e with
     Bool b1 -> Bool (not b1)
