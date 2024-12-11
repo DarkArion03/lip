@@ -20,6 +20,6 @@ rule read =
   | "if" { IF } | "then" { THEN } | "else" { ELSE }
   | "while" { WHILE } | "do" { DO }
   | "(" {LPAREN} | ")" {RPAREN}
-  | var as id { VAR id}
+  | var as id { VAR id }
   | const as n { CONST (int_of_string n) }
   | eof { EOF }
