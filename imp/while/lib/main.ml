@@ -1,17 +1,17 @@
 open Ast
 open Types
 
-let bind (st : state) (id : ide) (v : exprval) : state =
+let bind st id v =
   fun x -> if x = id then v else st x
 
-let bottom : state =
+let bottom =
   fun _ -> raise (UnboundVar "Access to uninitialized variable")
 
 (* Parsing dell'input e generazione del comando *)
 let parse (s : string) : conf =
   let lexbuf = Lexing.from_string s in
   let ast = Parser.prog Lexer.read lexbuf in
-  Cmd(ast, fun _ -> Nat 0)  (* Restituisci una struttura conf che include cmd e uno stato iniziale *)
+  Cmd(ast, fun _ -> Nat 0) 
 
 (* Evaluating expressions *)
 let rec eval_expr (st : state) = function
